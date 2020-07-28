@@ -18,6 +18,7 @@ namespace FewBox.Service.Job
             string url = $"{endpoint.Protocol}://{endpoint.Host}";
             Console.WriteLine(url);
             string response = HttpUtility.Get(url, new List<Header> { });
+            Console.WriteLine(response);
             Console.WriteLine("Hello FewBox!");
         }
 
