@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -18,8 +19,8 @@ namespace FewBox.Service.Job
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var endpoint = Configuration.GetSection("Endpoint").Get<Endpoint>();
-            services.AddSingleton(endpoint);
+            var endpointEvents = Configuration.GetSection("EndpointEvents").Get<IList<EndpointEvent>>();
+            services.AddSingleton(endpointEvents);
             services.AddLogging(configure =>
             {
                 configure.AddConsole();
