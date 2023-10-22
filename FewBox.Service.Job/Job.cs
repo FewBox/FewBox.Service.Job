@@ -25,29 +25,29 @@ namespace FewBox.Service.Job
                 {
                     string url = $"{endpointEvent.Endpoint.Protocol}://{endpointEvent.Endpoint.Host}:{endpointEvent.Endpoint.Port}/{endpointEvent.Event.Path}";
                     this.Logger.LogDebug(url);
-                    dynamic response;
-                    dynamic body = JsonUtility.Deserialize<dynamic>(endpointEvent.Event.Body);
+                    object response;
+                    dynamic body = JsonUtility.Deserialize<object>(endpointEvent.Event.Body);
                     switch (endpointEvent.Event.EnumType)
                     {
                         case EventType.Get:
-                            response = RestfulUtility.Get<dynamic>(url, new List<Header> { });
+                            response = RestfulUtility.Get<object>(url, new List<Header> { });
                             break;
                         case EventType.Post:
-                            response = RestfulUtility.Post<dynamic, dynamic>(url, new Package<dynamic>
+                            response = RestfulUtility.Post<object, object>(url, new Package<dynamic>
                             {
                                 Headers = new List<Header> { },
                                 Body = body
                             });
                             break;
                         case EventType.Put:
-                            response = RestfulUtility.Put<dynamic, dynamic>(url, new Package<dynamic>
+                            response = RestfulUtility.Put<object, object>(url, new Package<dynamic>
                             {
                                 Headers = new List<Header> { },
                                 Body = body
                             });
                             break;
                         case EventType.Patch:
-                            response = RestfulUtility.Patch<dynamic, dynamic>(url, new Package<dynamic>
+                            response = RestfulUtility.Patch<object, object>(url, new Package<dynamic>
                             {
                                 Headers = new List<Header> { },
                                 Body = body
@@ -55,11 +55,14 @@ namespace FewBox.Service.Job
                             "application/json-patch+json");
                             break;
                         case EventType.Delete:
-                            response = RestfulUtility.Delete<dynamic>(url, new List<Header> { });
+                            response = RestfulUtility.Delete<object>(url, new List<Header> { });
                             break;
                         default:
+                            response = new Object { };
                             break;
                     }
+                    string responseString = JsonUtility.Serialize(response);
+                    this.Logger.LogInformation(responseString);
                 }
 
             }
